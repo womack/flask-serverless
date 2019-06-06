@@ -20,7 +20,7 @@ def getData():
 
 @app.route("/", methods=["POST"])
 def appendData():
-    if(hasattr(request,"data"))
+    if hasattr(request,"data") & (request.headers['Content-Type'] == 'application/json'):
         obj = s3.Object("innovation-arts", "data.json")
         body = obj.get()['Body'].read()
         body = body.decode("utf8").replace("'", '"')
@@ -34,6 +34,8 @@ def appendData():
                         "data.json"
                     )
         return "updated"
+    else:
+        return "Invalid request"
     
 if __name__ == "__main__":
     app.run()
